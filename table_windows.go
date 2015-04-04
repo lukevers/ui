@@ -10,10 +10,10 @@ package ui
 
 import (
 	"fmt"
-	"reflect"
-	"unsafe"
-	"sync"
 	"image"
+	"reflect"
+	"sync"
+	"unsafe"
 )
 
 // #include "winapi_windows.h"
@@ -22,23 +22,23 @@ import "C"
 type table struct {
 	*tablebase
 	*controlSingleHWND
-	noautosize bool
-	colcount   C.int
-	selected   *event
-	chainresize		func(x int, y int, width int, height int, d *sizing)
-	free			map[C.uintptr_t]bool
-	freeLock		sync.Mutex
+	noautosize  bool
+	colcount    C.int
+	selected    *event
+	chainresize func(x int, y int, width int, height int, d *sizing)
+	free        map[C.uintptr_t]bool
+	freeLock    sync.Mutex
 }
 
 func finishNewTable(b *tablebase, ty reflect.Type) Table {
 	hwnd := C.newControl(C.xtableWindowClass,
 		C.WS_HSCROLL|C.WS_VSCROLL|C.WS_TABSTOP,
-		C.WS_EX_CLIENTEDGE)		// WS_EX_CLIENTEDGE without WS_BORDER will show the canonical visual styles border (thanks to MindChild in irc.efnet.net/#winprog)
+		C.WS_EX_CLIENTEDGE) // WS_EX_CLIENTEDGE without WS_BORDER will show the canonical visual styles border (thanks to MindChild in irc.efnet.net/#winprog)
 	t := &table{
-		controlSingleHWND:		newControlSingleHWND(hwnd),
-		tablebase: b,
-		selected:  newEvent(),
-		free:		make(map[C.uintptr_t]bool),
+		controlSingleHWND: newControlSingleHWND(hwnd),
+		tablebase:         b,
+		selected:          newEvent(),
+		free:              make(map[C.uintptr_t]bool),
 	}
 	t.fpreferredSize = t.xpreferredSize
 	t.chainresize = t.fresize
@@ -108,7 +108,7 @@ func tableGetCell(data unsafe.Pointer, tnm *C.tableNM) C.LRESULT {
 		hbitmap := C.toBitmap(unsafe.Pointer(i), C.intptr_t(i.Rect.Dx()), C.intptr_t(i.Rect.Dy()))
 		bitmap := C.uintptr_t(uintptr(unsafe.Pointer(hbitmap)))
 		t.freeLock.Lock()
-		t.free[bitmap] = true		// bitmap freed with C.freeBitmap()
+		t.free[bitmap] = true // bitmap freed with C.freeBitmap()
 		t.freeLock.Unlock()
 		return C.LRESULT(bitmap)
 	case datum.Kind() == reflect.Bool:
@@ -120,7 +120,7 @@ func tableGetCell(data unsafe.Pointer, tnm *C.tableNM) C.LRESULT {
 		s := fmt.Sprintf("%v", datum)
 		text := C.uintptr_t(uintptr(unsafe.Pointer(toUTF16(s))))
 		t.freeLock.Lock()
-		t.free[text] = false		// text freed with C.free()
+		t.free[text] = false // text freed with C.free()
 		t.freeLock.Unlock()
 		return C.LRESULT(text)
 	}
@@ -149,7 +149,7 @@ func (t *table) autoresize() {
 	t.RLock()
 	defer t.RUnlock()
 	if !t.noautosize {
-//TODO		C.tableAutosizeColumns(t.hwnd, t.colcount)
+		//TODO		C.tableAutosizeColumns(t.hwnd, t.colcount)
 	}
 }
 

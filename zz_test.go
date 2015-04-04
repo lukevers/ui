@@ -39,9 +39,9 @@ func newSimpleGrid(n int, c ...Control) SimpleGrid {
 }
 
 type colnametest struct {
-	IncorrectColumnName	string	`uicolumn:"Correct Column Name"`
-	IncorrectColumnName2	string	`uicolumn:"正解なコラムネーム"`		// thanks GlitterBerri in irc.badnik.net/#zelda
-	AlreadyCorrect			string
+	IncorrectColumnName  string `uicolumn:"Correct Column Name"`
+	IncorrectColumnName2 string `uicolumn:"正解なコラムネーム"` // thanks GlitterBerri in irc.badnik.net/#zelda
+	AlreadyCorrect       string
 }
 
 type dtype struct {
@@ -60,12 +60,12 @@ var ddata = []dtype{
 type testwin struct {
 	t          Tab
 	w          Window
-	roenter	TextField
-	roro		TextField
+	roenter    TextField
+	roro       TextField
 	repainter  *repainter
 	fe         *ForeignEvent
 	festack    Stack
-	festack2		Stack
+	festack2   Stack
 	festart    Button
 	felabel    Label
 	festop     Button

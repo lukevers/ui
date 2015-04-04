@@ -4,9 +4,9 @@ package ui
 
 import (
 	"fmt"
+	"image"
 	"reflect"
 	"unsafe"
-	"image"
 )
 
 // #include "objc_darwin.h"

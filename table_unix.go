@@ -6,9 +6,9 @@ package ui
 
 import (
 	"fmt"
+	"image"
 	"reflect"
 	"unsafe"
-	"image"
 )
 
 // #include "gtk_unix.h"
